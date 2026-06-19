@@ -38,8 +38,17 @@ class RefrigeratorService implements RefrigeratorContract
         ];
     }
 
-    public function removeIngredient(int $userId, int $id): void
+    public function removeIngredient(int $userId, int $ingredientId): bool
     {
-        Fridge::where('user_id', $userId)->where('id', $id)->delete();
+        $deleted = Fridge::where('user_id', $userId)->where('id', $ingredientId)->delete();
+        
+        return $deleted > 0;
+    }
+
+    public function clearInventory(int $userId): bool
+    {
+        $deleted = Fridge::where('user_id', $userId)->delete();
+
+        return $deleted > 0;
     }
 }

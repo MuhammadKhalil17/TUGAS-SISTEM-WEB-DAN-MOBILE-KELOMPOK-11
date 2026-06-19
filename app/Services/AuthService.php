@@ -30,7 +30,6 @@ class AuthService implements AuthContract
             ]);
         }
 
-        // Menerbitkan token akses via Sanctum
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return [
@@ -46,9 +45,16 @@ class AuthService implements AuthContract
         ];
     }
 
-    public function logout(User $user): void
+    public function logout(User $user): bool
     {
-        // Menghapus token aktif saat ini
-        $user->currentAccessToken()->delete();
+        // Menghapus token aktif saat ini dan mengembalikan status boolean
+        return (bool) $user->currentAccessToken()->delete();
+    }
+
+    public function refreshToken(User $user): string
+    {
+        // Menghapus token lama dan menerbitkan token baru
+        $user->tokens()->delete();
+        return $user->createToken('auth_token')->plainTextToken;
     }
 }

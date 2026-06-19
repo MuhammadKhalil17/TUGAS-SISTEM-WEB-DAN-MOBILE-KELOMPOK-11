@@ -2,44 +2,38 @@
 
 namespace App\Providers;
 
+use App\Contracts\AuthContract;
+use App\Contracts\FavoriteRecipeContract;
+use App\Contracts\RecipeContract;
+use App\Contracts\RefrigeratorContract;
+use App\Services\AuthService;
+use App\Services\FavoriteRecipeService;
+use App\Services\RecipeService;
+use App\Services\RefrigeratorService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Daftarkan aplikasi service apa pun di sini.
      */
     public function register(): void
     {
-        // 🔑 PROSES BINDING CONTRACT KE SERVICE IMPLEMENTASI
-        
-        // 1. Otentikasi
-        $this->app->bind(
-            \App\Contracts\AuthContract::class, 
-            \App\Services\AuthService::class
-        );
+        // 1. Binding untuk Autentikasi
+        $this->app->bind(AuthContract::class, AuthService::class);
 
-        // 2. Kulkas / Inventaris Bahan Pangan
-        $this->app->bind(
-            \App\Contracts\RefrigeratorContract::class, 
-            \App\Services\RefrigeratorService::class
-        );
+        // 2. Binding untuk Manajemen Kulkas
+        $this->app->bind(RefrigeratorContract::class, RefrigeratorService::class);
 
-        // 3. Pencarian Resep (Spoonacular Proxy)
-        $this->app->bind(
-            \App\Contracts\RecipeContract::class, 
-            \App\Services\RecipeService::class
-        );
+        // 3. Binding untuk Fitur Resep Favorit
+        $this->app->bind(FavoriteRecipeContract::class, FavoriteRecipeService::class);
 
-        // 4. Resep Favorit / Bookmark
-        $this->app->bind(
-            \App\Contracts\FavoriteRecipeContract::class, 
-            \App\Services\FavoriteRecipeService::class
-        );
+        // 4. Binding untuk Fitur Pencarian Resep (Spoonacular)
+        $this->app->bind(RecipeContract::class, RecipeService::class);
     }
 
     /**
-     * Bootstrap any application services.
+     * Jalankan proses bootstrap service apa pun di sini.
      */
     public function boot(): void
     {

@@ -19,16 +19,16 @@ class FavoriteRecipeService implements FavoriteRecipeContract
         ];
     }
 
-    public function add(int $userId, array $data): array
+    public function add(int $userId, array $recipe): array
     {
         $bookmark = Bookmark::updateOrCreate(
             [
                 'user_id' => $userId,
-                'spoonacular_recipe_id' => $data['recipe_id']
+                'spoonacular_recipe_id' => $recipe['recipe_id']
             ],
             [
-                'title' => $data['title'],
-                'image' => $data['image'] ?? null,
+                'title' => $recipe['title'],
+                'image' => $recipe['image'] ?? null,
             ]
         );
 
@@ -39,10 +39,19 @@ class FavoriteRecipeService implements FavoriteRecipeContract
         ];
     }
 
-    public function remove(int $userId, int $recipeId): void
+    public function remove(int $userId, int $recipeId): bool
     {
-        Bookmark::where('user_id', $userId)
+        $deleted = Bookmark::where('user_id', $userId)
             ->where('spoonacular_recipe_id', $recipeId)
             ->delete();
+
+        return $deleted > 0;
+    }
+
+    public function isFavorited(int $userId, int $recipeId): bool
+    {
+        return Bookmark::where('user_id', $userId)
+            ->where('spoonacular_recipe_id', $recipeId)
+            ->exists();
     }
 }
