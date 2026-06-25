@@ -40,5 +40,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/bookmarks', [FavoriteRecipeController::class, 'index']);
     Route::post('/bookmarks', [FavoriteRecipeController::class, 'store']);
     Route::delete('/bookmarks/{recipeId}', [FavoriteRecipeController::class, 'destroy']);
-    
+    Route::view('/', 'dashboard');
+
+    Route::view('/dashboard', 'dashboard');
+
+    Route::view('/fridge', 'fridge.index');
+
+    Route::view('/recipes', 'recipes.index');
+
+    Route::view('/favorites', 'favorites.index');  
 });
