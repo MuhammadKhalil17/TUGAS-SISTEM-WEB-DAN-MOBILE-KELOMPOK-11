@@ -26,10 +26,7 @@ class FavoriteRecipeController extends Controller
         );
     }
 
-    /**
-     * Menyimpan resep ke dalam daftar favorit (Menggantikan BookmarkController@store).
-     * POST /api/v1/favorite-recipes
-     */
+    
     public function store(Request $request): JsonResponse
     {
         // Menambahkan validasi ketat sebelum melempar data ke Service Layer

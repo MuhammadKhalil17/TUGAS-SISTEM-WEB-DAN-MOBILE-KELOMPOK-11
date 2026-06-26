@@ -3,9 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RecipeController;
-use App\Http\Controllers\RefrigeratorController;
+use App\Http\Controllers\FridgeController;
 use App\Http\Controllers\FavoriteRecipeController;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -26,27 +25,25 @@ Route::middleware('auth:sanctum')->group(function () {
     // Logout Sesi
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 
-    // 🥦 Manajemen Inventaris Kulkas (Refrigerator)
-    Route::get('/fridge', [RefrigeratorController::class, 'index']);
-    Route::post('/fridge', [RefrigeratorController::class, 'store']);
-    Route::delete('/fridge/{id}', [RefrigeratorController::class, 'destroy']);
+    //  Manajemen Inventaris Kulkas (Refrigerator)
+    Route::get('/fridge', [FridgeController::class, 'index']);
+    Route::post('/fridge', [FridgeController::class, 'store']);
+    Route::delete('/fridge/{id}', [FridgeController::class, 'destroy']);
 
-    // 🍳 Mesin Pencari & Generator Resep (Spoonacular Proxy)
+    //  Mesin Pencari & Generator Resep (Spoonacular Proxy)
     Route::post('/recipes/search', [RecipeController::class, 'search']);
     Route::get('/recipes/{id}/details', [RecipeController::class, 'show']);
     Route::get('/recipes/{id}/nutrition', [RecipeController::class, 'nutrition']);
 
-    // 📌 Buku Resep Favorit (Bookmark / Favorite)
+    //  Buku Resep Favorit (Bookmark / Favorite)
     Route::get('/bookmarks', [FavoriteRecipeController::class, 'index']);
     Route::post('/bookmarks', [FavoriteRecipeController::class, 'store']);
     Route::delete('/bookmarks/{recipeId}', [FavoriteRecipeController::class, 'destroy']);
-    Route::view('/', 'dashboard');
 
-    Route::view('/dashboard', 'dashboard');
 
-    Route::view('/fridge', 'fridge.index');
-
-    Route::view('/recipes', 'recipes.index');
-
-    Route::view('/favorites', 'favorites.index');  
 });
+Route::view('/', 'dashboard');
+Route::view('/dashboard', 'dashboard');
+Route::view('/fridge', 'fridge.index');
+Route::view('/recipes', 'recipes.index');
+Route::view('/favorites', 'favorites.index');
