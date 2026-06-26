@@ -6,20 +6,18 @@ use App\Http\Controllers\FridgeController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\FavoriteRecipeController;
 
-// Endpoint Publik (Tanpa Login)
+// Endpoint Publik API
 Route::post('/auth/register', [AuthController::class, 'register']);
-Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 
-// Endpoint Privat (Wajib Login / Membawa Bearer Token)
-Route::middleware('auth:sanctum')->group(function () {
-    // Fitur Kulkas
-    Route::get('/refrigerator', [FridgeController::class, 'index']);
-    Route::post('/refrigerator', [FridgeController::class, 'store']);
-    Route::delete('/refrigerator/clear', [FridgeController::class, 'clear']); 
-    Route::delete('/refrigerator/{id}', [FridgeController::class, 'destroy']);
+// Manajemen Kulkas
+Route::get('/fridge', [FridgeController::class, 'index']);
+Route::post('/fridge', [FridgeController::class, 'store']);
+Route::delete('/fridge/{id}', [FridgeController::class, 'destroy']);
 
-    // Fitur Resep Favorit
-    Route::get('/favorite-recipes', [FavoriteRecipeController::class, 'index']);
-    Route::post('/favorite-recipes', [FavoriteRecipeController::class, 'store']);
-    Route::delete('/favorite-recipes/{recipeId}', [FavoriteRecipeController::class, 'destroy']);
-});
+Route::post('/recipes/search', [RecipeController::class, 'search']);
+
+// PERBAIKAN DI SINI: Daftarkan rute alternatif agar klop dengan Fetch Blade temanmu
+Route::get('/favorite-recipes', [FavoriteRecipeController::class, 'index']);
+Route::post('/bookmarks', [FavoriteRecipeController::class, 'store']);
+Route::delete('/favorite-recipes/{recipeId}', [FavoriteRecipeController::class, 'destroy']);

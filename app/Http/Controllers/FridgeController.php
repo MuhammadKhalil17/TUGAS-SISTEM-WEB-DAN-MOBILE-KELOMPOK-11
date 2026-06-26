@@ -15,24 +15,24 @@ class FridgeController extends Controller
         private readonly RefrigeratorContract $refrigerator
     ) {}
 
-    /**
+/**
      * Melihat isi kulkas user.
-     * GET /api/v1/refrigerator
+     * GET /api/v1/fridge
      */
     public function index(Request $request): JsonResponse
     {
+        // Ganti $request->user()->id dengan 1
         return response()->json(
-            $this->refrigerator->getAllByUser($request->user()->id)
+            $this->refrigerator->getAllByUser(1)
         );
     }
 
     /**
      * Menambahkan bahan makanan baru ke dalam kulkas.
-     * POST /api/v1/refrigerator
+     * POST /api/v1/fridge
      */
     public function store(Request $request): JsonResponse
     {
-        // Validasi input nama bahan makanan
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
         ]);
@@ -44,9 +44,10 @@ class FridgeController extends Controller
             ], 400);
         }
 
+        // Ganti $request->user()->id dengan 1
         return response()->json(
             $this->refrigerator->addIngredient(
-                $request->user()->id,
+                1,
                 $request->all()
             ),
             201
@@ -55,11 +56,12 @@ class FridgeController extends Controller
 
     /**
      * Menghapus satu bahan makanan tertentu dari kulkas berdasarkan ID.
-     * DELETE /api/v1/refrigerator/{id}
+     * DELETE /api/v1/fridge/{id}
      */
     public function destroy(Request $request, int $id): JsonResponse
     {
-        $deleted = $this->refrigerator->removeIngredient($request->user()->id, $id);
+        // Ganti $request->user()->id dengan 1
+        $deleted = $this->refrigerator->removeIngredient(1, $id);
 
         if (! $deleted) {
             return response()->json([
@@ -73,10 +75,9 @@ class FridgeController extends Controller
             'message' => 'Bahan makanan berhasil dihapus dari kulkas.'
         ]);
     }
-
     /**
      * Mengosongkan seluruh isi kulkas user.
-     * DELETE /api/v1/refrigerator/clear
+     * DELETE /api/v1/fridge/clear
      */
     public function clear(Request $request): JsonResponse
     {
