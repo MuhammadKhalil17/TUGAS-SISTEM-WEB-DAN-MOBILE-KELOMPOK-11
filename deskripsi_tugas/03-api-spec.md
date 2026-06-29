@@ -255,15 +255,4 @@ Dokumentasi ini memuat seluruh endpoint REST API yang disediakan oleh server Lar
   "status": "error",
   "message": "Recipe is already bookmarked"
 }
-
-```
-
-```
-
----
-
-Dokumentasi di atas sudah bersih tanpa instruksi tambahan, jadi temanmu di bagian Frontend dijamin langsung paham variabel apa saja yang harus dia panggil.
-
-Kalau teks ini sudah kamu amankan atau kirim ke dia, bilang ya! Kita lanjut ke poin kedua: **Membuka konfigurasi CORS di Laravel kamu**.
-
 ```
