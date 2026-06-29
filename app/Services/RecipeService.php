@@ -27,6 +27,30 @@ class RecipeService implements RecipeContract
             ];
         }
 
+        if (empty($this->apiKey)) {
+            // Return mock data for local demonstration/testing when API key is not configured
+            $mockRecipes = [
+                [
+                    'id' => 648438,
+                    'title' => 'Tomato and Egg Scramble',
+                    'image' => 'https://spoonacular.com/recipeImages/648438-312x231.jpg',
+                    'usedIngredientCount' => count(array_intersect(array_map('strtolower', $ingredients), ['egg', 'tomato', 'onion', 'garlic'])),
+                    'missedIngredientCount' => max(0, 3 - count(array_intersect(array_map('strtolower', $ingredients), ['egg', 'tomato', 'onion', 'garlic'])))
+                ],
+                [
+                    'id' => 648439,
+                    'title' => 'Classic Chicken Soup',
+                    'image' => 'https://spoonacular.com/recipeImages/648439-312x231.jpg',
+                    'usedIngredientCount' => count(array_intersect(array_map('strtolower', $ingredients), ['chicken', 'onion', 'garlic', 'carrot'])),
+                    'missedIngredientCount' => max(0, 4 - count(array_intersect(array_map('strtolower', $ingredients), ['chicken', 'onion', 'garlic', 'carrot'])))
+                ]
+            ];
+            return [
+                'status' => 'success',
+                'data' => $mockRecipes
+            ];
+        }
+
         $ingredientsString = implode(',', $ingredients);
 
         // Menembak pihak ketiga (Spoonacular)
@@ -52,6 +76,24 @@ class RecipeService implements RecipeContract
 
     public function getRecipeDetail(int $id): array
     {
+        if (empty($this->apiKey)) {
+            return [
+                'status' => 'success',
+                'data' => [
+                    'id' => $id,
+                    'title' => $id === 648438 ? 'Tomato and Egg Scramble' : 'Classic Chicken Soup',
+                    'readyInMinutes' => 15,
+                    'servings' => 2,
+                    'instructions' => '1. Beat the eggs in a bowl. 2. Chop tomatoes and onions. 3. Heat oil and stir-fry.',
+                    'extendedIngredients' => [
+                        '2 large eggs',
+                        '2 medium tomatoes',
+                        '1/2 onion'
+                    ]
+                ]
+            ];
+        }
+
         $response = Http::get("https://api.spoonacular.com/recipes/{$id}/information", [
             'apiKey' => $this->apiKey
         ]);
@@ -82,6 +124,18 @@ class RecipeService implements RecipeContract
 
     public function getNutrition(int $id): array
     {
+        if (empty($this->apiKey)) {
+            return [
+                'status' => 'success',
+                'data' => [
+                    'calories' => '245k',
+                    'carbs' => '15g',
+                    'fat' => '12g',
+                    'protein' => '10g'
+                ]
+            ];
+        }
+
         $response = Http::get("https://api.spoonacular.com/recipes/{$id}/nutritionWidget.json", [
             'apiKey' => $this->apiKey
         ]);

@@ -15,11 +15,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Default Lab Assistant Account
+        User::factory()->create([
+            'name' => 'Asisten Laboratorium',
+            'email' => 'asisten@kulkasku.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('asisten123'),
+        ]);
 
+        // Default Test User Account
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('password'),
         ]);
     }
 }

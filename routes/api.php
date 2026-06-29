@@ -11,13 +11,28 @@ Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 
 // Manajemen Kulkas
-Route::get('/fridge', [FridgeController::class, 'index']);
-Route::post('/fridge', [FridgeController::class, 'store']);
-Route::delete('/fridge/{id}', [FridgeController::class, 'destroy']);
+Route::prefix('fridge')->group(function () {
+    Route::get('/', [FridgeController::class, 'index']);
+    Route::post('/', [FridgeController::class, 'store']);
+    Route::delete('/clear', [FridgeController::class, 'clear']);
+    Route::delete('/{id}', [FridgeController::class, 'destroy']);
+});
 
+Route::prefix('refrigerator')->group(function () {
+    Route::get('/', [FridgeController::class, 'index']);
+    Route::post('/', [FridgeController::class, 'store']);
+    Route::delete('/clear', [FridgeController::class, 'clear']);
+    Route::delete('/{id}', [FridgeController::class, 'destroy']);
+});
+
+// Generator Resep
 Route::post('/recipes/search', [RecipeController::class, 'search']);
+Route::get('/recipes/{id}/details', [RecipeController::class, 'show']);
 
-// PERBAIKAN DI SINI: Daftarkan rute alternatif agar klop dengan Fetch Blade temanmu
+// Buku Resep Favorit
 Route::get('/favorite-recipes', [FavoriteRecipeController::class, 'index']);
-Route::post('/bookmarks', [FavoriteRecipeController::class, 'store']);
+Route::post('/favorite-recipes', [FavoriteRecipeController::class, 'store']);
 Route::delete('/favorite-recipes/{recipeId}', [FavoriteRecipeController::class, 'destroy']);
+
+// Rute Alternatif Bookmarks
+Route::post('/bookmarks', [FavoriteRecipeController::class, 'store']);

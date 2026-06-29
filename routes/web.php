@@ -12,3 +12,7 @@ Route::view('/dashboard', 'dashboard');
 Route::view('/fridge', 'fridge.fridge');
 Route::view('/recipes', 'recipes.recipes');
 Route::view('/favorites', 'favorites.favorites');
+
+// 3. Halaman Autentikasi
+Route::view('/login', 'auth.login');
+Route::view('/register', 'auth.register');

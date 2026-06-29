@@ -1,59 +1,85 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Kulkasku 🥬 — Sistem Manajemen Kulkas & Generator Resep Pintar
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Selamat datang di **Kulkasku**, sebuah aplikasi berbasis Laravel yang dirancang untuk membantu pengguna mengelola bahan masakan di dalam kulkas secara digital dan mendapatkan rekomendasi resep masakan pintar berdasarkan stok yang ada.
 
-## About Laravel
+Proyek ini dibuat untuk memenuhi tugas mata kuliah **Sistem Web dan Mobile (Kelompok 11)**.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🌐 Tautan Aplikasi Live (Production)
+Aplikasi saat ini aktif dan berjalan online di internet:
+**Link URL**: [https://web-production-45d72.up.railway.app](https://web-production-45d72.up.railway.app)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 👨‍🍳 Akun Uji Coba (Lab Assistant / Dosen)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Untuk memudahkan pengujian oleh Asisten Praktikum/Dosen, silakan gunakan akun default berikut yang sudah didaftarkan melalui seeder database:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Akun 1 (Utama - Asisten Lab)
+* **Email:** `asisten@kulkasku.com`
+* **Password:** `asisten123`
+* **Nama:** `Asisten Laboratorium`
 
-## Laravel Sponsors
+### Akun 2 (Test User)
+* **Email:** `test@example.com`
+* **Password:** `password`
+* **Nama:** `Test User`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 🚀 Fitur Unggulan
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+1. **Chef Hub Dashboard**: Panel utama dengan sambutan interaktif dan penentuan **Chef Rank** (gelar kuliner) secara dinamis berdasarkan keaktifan bahan dapur Anda. Dilengkapi juga dengan tips memasak harian.
+2. **Kulkas Saya (Visual Compartment)**: Tampilan isi kulkas yang dikelompokkan secara estetik ke dalam rak-rak virtual (Protein, Sayur & Buah, Dairy/Lainnya) lengkap dengan deteksi emoji otomatis.
+3. **Smart Recipe Generator**: Pencarian resep masakan global (Spoonacular API) yang secara otomatis mencocokkan bahan yang tersedia di kulkas Anda.
+4. **Resep Favorit**: Bookmark resep pilihan Anda ke dalam buku resep digital pribadi.
+5. **Sistem Modal & Toast Kustom**: Penggunaan modal konfirmasi glassmorphism dan notifikasi toast mengambang yang responsif menggantikan alert bawaan browser.
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🛠️ Panduan Instalasi & Pengujian
 
-## Code of Conduct
+Silakan ikuti langkah-langkah berikut untuk menjalankan aplikasi di lingkungan lokal Anda:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 1. Kloning & Persiapan Environment
+Pastikan Anda berada di direktori root proyek, lalu salin berkas konfigurasi environment:
+```bash
+cp .env.example .env
+```
+Sesuaikan pengaturan database Anda di berkas `.env` (misalnya koneksi MySQL):
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nama_database_anda
+DB_USERNAME=username_database_anda
+DB_PASSWORD=password_database_anda
+```
 
-## Security Vulnerabilities
+### 2. Instalasi Dependensi Backend (Composer)
+```bash
+composer install
+```
+Jangan lupa untuk men-generate application key Laravel:
+```bash
+php artisan key:generate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 3. Instalasi Dependensi Frontend & Kompilasi Assets (NPM + Vite)
+```bash
+npm install
+npm run build
+```
 
-## License
+### 4. Migrasi Database & Seeding Akun Uji Coba
+Jalankan migrasi tabel beserta seeder untuk memuat akun uji coba di atas:
+```bash
+php artisan migrate:fresh --seed
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 5. Jalankan Server Lokal
+```bash
+php artisan serve
+```
+Buka peramban (browser) Anda dan akses alamat [http://127.0.0.1:8000](http://127.0.0.1:8000). Anda dapat langsung masuk menggunakan akun asisten praktikum di atas!

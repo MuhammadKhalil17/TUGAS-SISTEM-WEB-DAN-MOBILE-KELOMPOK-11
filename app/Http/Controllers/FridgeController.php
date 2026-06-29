@@ -21,9 +21,9 @@ class FridgeController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        // Ganti $request->user()->id dengan 1
+        $userId = $request->user()?->id ?? 1;
         return response()->json(
-            $this->refrigerator->getAllByUser(1)
+            $this->refrigerator->getAllByUser($userId)
         );
     }
 
@@ -33,6 +33,7 @@ class FridgeController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        $userId = $request->user()?->id ?? 1;
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
         ]);
@@ -44,10 +45,9 @@ class FridgeController extends Controller
             ], 400);
         }
 
-        // Ganti $request->user()->id dengan 1
         return response()->json(
             $this->refrigerator->addIngredient(
-                1,
+                $userId,
                 $request->all()
             ),
             201
@@ -60,8 +60,8 @@ class FridgeController extends Controller
      */
     public function destroy(Request $request, int $id): JsonResponse
     {
-        // Ganti $request->user()->id dengan 1
-        $deleted = $this->refrigerator->removeIngredient(1, $id);
+        $userId = $request->user()?->id ?? 1;
+        $deleted = $this->refrigerator->removeIngredient($userId, $id);
 
         if (! $deleted) {
             return response()->json([
@@ -81,7 +81,8 @@ class FridgeController extends Controller
      */
     public function clear(Request $request): JsonResponse
     {
-        $cleared = $this->refrigerator->clearInventory($request->user()->id);
+        $userId = $request->user()?->id ?? 1;
+        $cleared = $this->refrigerator->clearInventory($userId);
 
         if (! $cleared) {
             return response()->json([
