@@ -1,75 +1,83 @@
 <?php
 
-namespace Tests\Feature;
-
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class AuthTest extends TestCase
-{
-    use RefreshDatabase;
+uses(RefreshDatabase::class);
 
-    /** @test */
-    public function user_can_register_with_valid_data()
-    {
-        $response = $this->postJson('/api/v1/auth/register', [
-            'name'     => 'Asisten Lab',
-            'email'    => 'aslab@test.com',
-            'password' => 'password123',
-        ]);
+// ─── REGISTER ────────────────────────────────────────────────────────────────
 
-        $response->assertStatus(201)
-                 ->assertJsonPath('status', 'success');
+test('user dapat register dengan data yang valid', function () {
+    $response = $this->postJson('/api/v1/auth/register', [
+        'name'     => 'Asisten Lab',
+        'email'    => 'aslab@test.com',
+        'password' => 'password123',
+    ]);
 
-        $this->assertDatabaseHas('users', ['email' => 'aslab@test.com']);
-    }
+    $response->assertStatus(201)
+             ->assertJsonPath('status', 'success');
 
-    /** @test */
-    public function register_fails_with_duplicate_email()
-    {
-        User::factory()->create(['email' => 'duplicate@test.com']);
+    $this->assertDatabaseHas('users', ['email' => 'aslab@test.com']);
+});
 
-        $response = $this->postJson('/api/v1/auth/register', [
-            'name'     => 'Coba Lagi',
-            'email'    => 'duplicate@test.com',
-            'password' => 'password123',
-        ]);
+test('register gagal jika email sudah dipakai', function () {
+    User::factory()->create(['email' => 'duplikat@test.com']);
 
-        $response->assertStatus(422);
-    }
+    $response = $this->postJson('/api/v1/auth/register', [
+        'name'     => 'Coba Lagi',
+        'email'    => 'duplikat@test.com',
+        'password' => 'password123',
+    ]);
 
-    /** @test */
-    public function user_can_login_with_correct_credentials()
-    {
-        User::factory()->create([
-            'email'    => 'login@test.com',
-            'password' => bcrypt('rahasia123'),
-        ]);
+    $response->assertStatus(422);
+});
 
-        $response = $this->postJson('/api/v1/auth/login', [
-            'email'    => 'login@test.com',
-            'password' => 'rahasia123',
-        ]);
+test('register gagal jika field wajib kosong', function () {
+    $response = $this->postJson('/api/v1/auth/register', []);
 
-        $response->assertStatus(200)
-                 ->assertJsonPath('status', 'success')
-                 ->assertJsonStructure(['data' => ['token', 'user']]);
-    }
+    $response->assertStatus(422)
+             ->assertJsonValidationErrors(['name', 'email', 'password']);
+});
 
-    /** @test */
-    public function login_fails_with_wrong_password()
-    {
-        User::factory()->create([
-            'email'    => 'wrongpass@test.com',
-            'password' => bcrypt('benar123'),
-        ]);
+// ─── LOGIN ────────────────────────────────────────────────────────────────────
 
-        $response = $this->postJson('/api/v1/auth/login', [
-            'email'    => 'wrongpass@test.com',
-            'password' => 'salah456',
-        ]);
+test('user dapat login dengan kredensial yang benar', function () {
+    User::factory()->create([
+        'email'    => 'login@test.com',
+        'password' => bcrypt('rahasia123'),
+    ]);
 
-        $response->assertStatus(401);
-    }
-}
+    $response = $this->postJson('/api/v1/auth/login', [
+        'email'    => 'login@test.com',
+        'password' => 'rahasia123',
+    ]);
+
+    $response->assertStatus(200)
+             ->assertJsonPath('status', 'success')
+             ->assertJsonStructure([
+                 'data' => ['token', 'user' => ['id', 'name', 'email']]
+             ]);
+});
+
+test('login gagal jika password salah', function () {
+    User::factory()->create([
+        'email'    => 'salah@test.com',
+        'password' => bcrypt('benar123'),
+    ]);
+
+    $response = $this->postJson('/api/v1/auth/login', [
+        'email'    => 'salah@test.com',
+        'password' => 'salah456',
+    ]);
+
+    $response->assertStatus(401);
+});
+
+test('login gagal jika email tidak terdaftar', function () {
+    $response = $this->postJson('/api/v1/auth/login', [
+        'email'    => 'tidakada@test.com',
+        'password' => 'apapun123',
+    ]);
+
+    $response->assertStatus(401);
+});
