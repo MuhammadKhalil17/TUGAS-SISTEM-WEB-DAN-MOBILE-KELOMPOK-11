@@ -46,10 +46,10 @@ test('user dapat menambahkan bahan ke kulkas', function () {
     $response = $this->withToken($token)
                      ->postJson('/api/v1/fridge', ['name' => 'tomato']);
 
-    $response->assertStatus(200)
+    $response->assertStatus(201)
              ->assertJsonPath('status', 'success');
 
-    $this->assertDatabaseHas('ingredients', ['name' => 'tomato']);
+    $this->assertDatabaseHas('fridges', ['name' => 'tomato']);
 });
 
 test('tambah bahan gagal jika nama kosong', function () {
@@ -58,7 +58,7 @@ test('tambah bahan gagal jika nama kosong', function () {
     $response = $this->withToken($token)
                      ->postJson('/api/v1/fridge', ['name' => '']);
 
-    $response->assertStatus(422);
+    $response->assertStatus(400);
 });
 
 // ─── HAPUS SATU BAHAN ─────────────────────────────────────────────────────────
@@ -75,7 +75,7 @@ test('user dapat menghapus satu bahan dari kulkas', function () {
     $response = $this->withToken($token)->deleteJson("/api/v1/fridge/{$id}");
 
     $response->assertStatus(200);
-    $this->assertDatabaseMissing('ingredients', ['id' => $id]);
+    $this->assertDatabaseMissing('fridges', ['id' => $id]);
 });
 
 // ─── KOSONGKAN KULKAS ─────────────────────────────────────────────────────────

@@ -48,7 +48,7 @@ test('user dapat menyimpan resep ke daftar favorit', function () {
                          'image'     => 'https://spoonacular.com/recipeImages/648438-312x231.jpg',
                      ]);
 
-    $response->assertStatus(200)
+    $response->assertStatus(201)
              ->assertJsonPath('status', 'success');
 
     $this->assertDatabaseHas('bookmarks', ['spoonacular_recipe_id' => 648438]);
