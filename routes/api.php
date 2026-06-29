@@ -10,7 +10,12 @@ use App\Http\Controllers\FavoriteRecipeController;
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 
-// Manajemen Kulkas
+// Endpoint terproteksi Sanctum
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+});
+
+// Manajemen Kulkas (Bisa diakses publik dengan fallback user_id = 1, atau terautentikasi)
 Route::prefix('fridge')->group(function () {
     Route::get('/', [FridgeController::class, 'index']);
     Route::post('/', [FridgeController::class, 'store']);
